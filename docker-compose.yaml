@@ -11,9 +11,9 @@ services:
       net14:
         ipv4_address: 10.0.14.4
       net16:
-        ipv4_address: 10.0.16.1
+        ipv4_address: 10.0.16.5
       net19:
-        ipv4_address: 10.0.19.1
+        ipv4_address: 10.0.19.5
 
 
   r3:
