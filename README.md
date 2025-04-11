@@ -2,18 +2,18 @@
 
 ## Setup once on POWDER
 
-### 1. Clone the assignment helper files:
+### 1. Clone the repo
 ```
-git clone https://gitlab.flux.utah.edu/teach-studentview/cs4480-2025-s.git
+git clone https://github.com/amhansen2/4480_traffic_control.git
 ```
 
 ### 2. Install docker:
 ```
-cd cs4480-2025-s/pa3/part1/
+cd 4480_traffic_controller
 ./dockersetup
 ```
 
-### 3. Instantiate your three node network: HostA < − > R1 < − > HostB
+### 3. Instantiate the network by composing the containers
 ```
 # need to run docker commands as root
 sudo bash
