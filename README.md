@@ -21,6 +21,17 @@ sudo bash
 docker compose up -d
 ```
 
+
+
+## Test FRR
+docker exec -it 4480_traffic_control-r1-1 bash
+ 
+then 
+vtysh
+
+
+
+
 #### Other useful Docker commands:
 - see all containers and status
 ```
