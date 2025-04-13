@@ -1,12 +1,11 @@
 FROM ubuntu
 
-# Install basic networking and debugging tools
+# Install base networking/debug tools
 RUN apt-get update && apt-get -y install \
-    bash iproute2 net-tools tcpdump vim iputils-ping curl gnupg lsb-release frr frr-pythontools && \
+    bash iproute2 net-tools tcpdump vim iputils-ping curl gnupg lsb-release && \
     apt-get clean
 
-
-# Add FRR repo and install FRR and OSPF tools
+# Add FRR repository and install FRR and Python tools
 RUN curl -s https://deb.frrouting.org/frr/keys.gpg | tee /usr/share/keyrings/frrouting.gpg > /dev/null && \
     echo "deb [signed-by=/usr/share/keyrings/frrouting.gpg] https://deb.frrouting.org/frr $(lsb_release -s -c) frr-stable" | \
     tee -a /etc/apt/sources.list.d/frr.list && \
@@ -16,8 +15,8 @@ RUN curl -s https://deb.frrouting.org/frr/keys.gpg | tee /usr/share/keyrings/frr
 # Enable OSPF daemon
 RUN sed -i 's/ospfd=no/ospfd=yes/' /etc/frr/daemons
 
-# Optional: copy initial FRR config (or handle via startup script instead)
+# Copy the router-specific FRR config
 COPY frr.conf /etc/frr/frr.conf
 
-# Default to bash shell
+# Default shell
 CMD ["bash"]

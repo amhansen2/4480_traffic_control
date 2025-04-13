@@ -1,7 +1,7 @@
 
 services:
   r1:
-    build: .
+    build: ./r1
     stdin_open: true
     tty: true
     cap_add:
@@ -19,7 +19,7 @@ services:
 
 
   r3:
-    build: .
+    build: ./r3
     stdin_open: true
     tty: true
     cap_add:
@@ -36,7 +36,7 @@ services:
         ipv4_address: 10.0.17.3
 
   r2:
-    build: .
+    build: ./r2
     stdin_open: true
     tty: true
     cap_add:
@@ -51,7 +51,7 @@ services:
         ipv4_address: 10.0.17.2
 
   r4:
-    build: .
+    build: ./r4
     stdin_open: true
     tty: true
     cap_add:
