@@ -2,8 +2,9 @@ FROM ubuntu
 
 # Install basic networking and debugging tools
 RUN apt-get update && apt-get -y install \
-    bash iproute2 net-tools tcpdump vim iputils-ping curl gnupg lsb-release && \
+    bash iproute2 net-tools tcpdump vim iputils-ping curl gnupg lsb-release frr frr-pythontools && \
     apt-get clean
+
 
 # Add FRR repo and install FRR and OSPF tools
 RUN curl -s https://deb.frrouting.org/frr/keys.gpg | tee /usr/share/keyrings/frrouting.gpg > /dev/null && \
