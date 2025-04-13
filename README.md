@@ -9,7 +9,7 @@ git clone https://github.com/amhansen2/4480_traffic_control.git
 
 ### 2. Install docker:
 ```
-cd 4480_traffic_controller
+cd 4480_traffic_control
 ./dockersetup
 ```
 
