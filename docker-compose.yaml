@@ -68,7 +68,7 @@ services:
 
 
   ha:
-    build: .
+    build: ./ha
     stdin_open: true
     tty: true
     cap_add:
@@ -79,7 +79,7 @@ services:
         ipv4_address: 10.0.14.3
 
   hb:
-    build: .
+    build: ./hb
     stdin_open: true
     tty: true
     cap_add:
