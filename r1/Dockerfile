@@ -12,8 +12,12 @@ RUN curl -s https://deb.frrouting.org/frr/keys.gpg | tee /usr/share/keyrings/frr
     apt-get update && \
     apt-get -y install frr frr-pythontools
 
+
+
 # Enable OSPF daemon
 RUN sed -i 's/ospfd=no/ospfd=yes/' /etc/frr/daemons
+# Append Zebra and OSPF daemon enable configurations to /etc/frr/daemons
+RUN echo -e "zebra=yes\nospfd=yes" >> /etc/frr/daemons
 
 # Copy the router-specific FRR config
 COPY frr.conf /etc/frr/frr.conf
