@@ -22,5 +22,7 @@ RUN sed -i 's/ospfd=no/ospfd=yes/' /etc/frr/daemons
 # Copy initial FRR config (optional, could be per-router config)
 COPY frr.conf /etc/frr/frr.conf
 
-# Default to bash shell
-CMD ["bash"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
