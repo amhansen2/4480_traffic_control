@@ -13,7 +13,12 @@ def create_topology():
     print("Building Network Topology...")
     run_command(["sudo", "./dockersetup"])
     run_command(["sudo", "docker", "compose", "up", "-d"])
-
+    
+    # Start FRR services on routers
+    routers = ["r1", "r2", "r3", "r4"]
+    for router in routers:
+        print(f"Starting FRR services on {router}...")
+        run_command(["sudo", "docker", "exec", f"4480_traffic_control-{router}-1", "./frr.sh"])
 
 def switch_path(direction):
     print(f"Switching path to {direction}...")

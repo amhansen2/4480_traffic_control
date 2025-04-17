@@ -22,6 +22,9 @@ RUN sed -i 's/ospfd=no/ospfd=yes/' /etc/frr/daemons
 COPY frr.conf /etc/frr/frr.conf
 COPY frr.sh /frr.sh
 RUN chmod +x /frr.sh
-ENTRYPOINT ["/frr.sh"]
+
+
+CMD ["tail", "-f", "/dev/null"]
+
 
 
