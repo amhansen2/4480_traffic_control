@@ -12,20 +12,20 @@ def run_command(cmd_list, check=True):
 def create_topology():
     print("Building Network Topology...")
     run_command(["sudo", "bash"])
-    run_command(["docker", "compose up", "-d"])
+    run_command(["docker", "compose", "up", "-d"])
 
-def start_ospf():
-    print("Starting OSPF on routers...")
-    routers = ["r1", "r2", "r3", "r4"]
-    for router in routers:
-        print(f"* * * Starting FRR services on {router}...")
-        run_command(["docker", "exec", router, "./frr.sh"])
+# def start_ospf():
+#     print("Starting OSPF on routers...")
+#     routers = ["r1", "r2", "r3", "r4"]
+#     for router in routers:
+#         print(f"* * * Starting FRR services on {router}...")
+#         run_command(["docker", "exec", router, "./frr.sh"])
 
-def install_routes():
-    print("[*] Installing static routes on hosts...")
-    # Example routes - you must adapt IP addresses according to your real topology
-    run_command(["docker", "exec", "ha", "ip", "route", "add", "10.0.3.0/24", "via", "10.0.1.1"])
-    run_command(["docker", "exec", "hb", "ip", "route", "add", "10.0.1.0/24", "via", "10.0.3.1"])
+# def install_routes():
+#     print("[*] Installing static routes on hosts...")
+#     # Example routes - you must adapt IP addresses according to your real topology
+#     run_command(["docker", "exec", "ha", "ip", "route", "add", "10.0.3.0/24", "via", "10.0.1.1"])
+#     run_command(["docker", "exec", "hb", "ip", "route", "add", "10.0.1.0/24", "via", "10.0.3.1"])
 
 def switch_path(direction):
     print(f"[*] Switching path to {direction}...")
