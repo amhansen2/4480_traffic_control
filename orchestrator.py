@@ -10,14 +10,14 @@ def run_command(cmd_list, check=True):
         sys.exit(1)
 
 def create_topology():
-    print("Building Network Topology")
+    print("Building Network Topology...")
     run_command(["docker-compose", "up", "-d"])
 
 def start_ospf():
-    print("[*] Starting OSPF daemons on routers...")
+    print("Starting OSPF on routers...")
     routers = ["r1", "r2", "r3", "r4"]
     for router in routers:
-        print(f"[*] Starting FRR services on {router}...")
+        print(f"* * * Starting FRR services on {router}...")
         run_command(["docker", "exec", router, "./frr.sh"])
 
 def install_routes():
