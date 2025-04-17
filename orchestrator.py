@@ -44,7 +44,16 @@ def switch_path(direction):
 
 def main():
     parser = argparse.ArgumentParser(description="Network Topology Orchestrator")
-    parser.add_argument("action", choices=["create", "switch"], help="Action to perform")
+    parser.add_argument(
+        "action",
+        choices=["create", "switch"],
+        help=(
+            "Action for the orchestrator to perform. "
+            "'create' initializes the network topology and ospf for the 4 routers. "
+            "'switch' changes the path direction between R1 and R3. "
+            "       - Use --north to set the path to use R2 and --south to set the path to R4."
+        )
+    )    
     parser.add_argument("--north", action="store_true", help="Switch path direction to north (only with 'switch' action)")
     parser.add_argument("--south", action="store_true", help="Switch path direction to south (only with 'switch' action)")
 
