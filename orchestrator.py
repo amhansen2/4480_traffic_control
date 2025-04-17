@@ -19,16 +19,16 @@ def switch_path(direction):
 
     if direction == "north":
         print("[*] Setting lower cost for north path (R1 -> R2 -> R3)...")
-        run_command(["docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 10"])
-        run_command(["docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 100"])
-        run_command(["docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 10"])
-        run_command(["docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 100"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 10"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 100"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 10"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 100"])
     elif direction == "south":
         print("[*] Setting lower cost for south path (R1 -> R4 -> R3)...")
-        run_command(["docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 100"])
-        run_command(["docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 10"])
-        run_command(["docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 100"])
-        run_command(["docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 10"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 100"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 10"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 100"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 10"])
     else:
         print("Invalid direction. Use 'north' or 'south'.")
         sys.exit(1)
