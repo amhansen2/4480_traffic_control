@@ -13,14 +13,13 @@ def create_topology():
     print("Building Network Topology...")
     run_command(["sudo", "docker", "compose", "build", "--no-cache"])
     run_command(["sudo", "docker", "compose", "up", "-d"])
-    
+
+def start_frr():
     # Start FRR services on routers
     routers = ["r1", "r2", "r3", "r4"]
     for router in routers:
         print(f"Starting FRR services on {router}...")
         run_command(["sudo", "docker", "exec", f"4480_traffic_control-{router}-1", "./frr.sh"])
-
-
 
 
 def get_interface_by_ip(container_name, target_ip_subnet):
@@ -72,7 +71,7 @@ def switch_path(direction):
 
 def main():
     parser = argparse.ArgumentParser(description="Network Topology Orchestrator")
-    parser.add_argument("action", choices=["create", "switch"], help="Action to perform")
+    parser.add_argument("action", choices=["create", "frr", "switch"], help="Action to perform")
     parser.add_argument("--north", action="store_true", help="Switch path direction to north (only with 'switch' action)")
     parser.add_argument("--south", action="store_true", help="Switch path direction to south (only with 'switch' action)")
 
@@ -80,6 +79,12 @@ def main():
 
     if args.action == "create":
         create_topology()
+        print("Network topology created and started.")
+        
+    
+    if args.action == "frr":
+        start_frr()
+        print("FRR services started on routers.")
 
 
     elif args.action == "switch":
