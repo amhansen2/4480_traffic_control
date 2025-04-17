@@ -16,12 +16,14 @@ def create_topology():
 
 def start_frr():
     routers = ["r1", "r2", "r3", "r4"]
-    for router in routers:
-        print(f"Starting FRR services on {router}...")
-        try:
-            run_command(["sudo", "docker", "exec", f"4480_traffic_control-{router}-1", "./frr.sh"])
-        except Exception as e:
-            print(f"Failed to start FRR on {router}: {e}")
+   
+    try:
+        run_command(["sudo", "docker", "exec", f"4480_traffic_control-r1-1", "./frr.sh"])
+        run_command(["sudo", "docker", "exec", f"4480_traffic_control-r2-1", "./frr.sh"])
+        run_command(["sudo", "docker", "exec", f"4480_traffic_control-r3-1", "./frr.sh"])
+        run_command(["sudo", "docker", "exec", f"4480_traffic_control-r4-1", "./frr.sh"])
+    except Exception as e:
+        print(f"Failed to start FRR")
 
 
 
