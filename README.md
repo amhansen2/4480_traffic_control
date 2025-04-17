@@ -1,38 +1,44 @@
 # 4480_traffic_control
-
+---
 ## Setup once on POWDER
 
+---
 ### 1. Clone the repo
 ```
 git clone https://github.com/amhansen2/4480_traffic_control.git
 ```
-
-### 2. Install docker:
+---
+### 2. Create 4 node topology
 ```
 cd 4480_traffic_control
-./dockersetup
+python3 orchestrator.py create
 ```
 
-### 3. Instantiate the network by composing the containers
+---
+### Test
+Jump onto router/host
 ```
-# need to run docker commands as root
-sudo bash
-# start up Docker containers as specified by config files
-docker compose up -d
-```
-
-
-
-## Test FRR
 docker exec -it 4480_traffic_control-r1-1 bash
- 
-then 
+```
+
+test frr stuff
+```
 vtysh
+```
 
+ping (from ha)
+```
+ping 10.0.15.3
+```
 
+install and use traceroute to see different paths (from ha)
+```
+apt install -y traceroute
+traceroute 10.0.15.3
+```
 
-
-#### Other useful Docker commands:
+---
+### Other useful Docker commands:
 - see all containers and status
 ```
 docker ps

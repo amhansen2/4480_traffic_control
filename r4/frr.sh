@@ -1,7 +1,5 @@
-#!/bin/bash
-
-# Start FRR daemons
+# start FRR
 /usr/lib/frr/frrinit.sh start
 
-# Drop into shell so the container stays alive
+# drop into shell so container stays alive
 exec bash
