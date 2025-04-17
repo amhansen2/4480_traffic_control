@@ -20,32 +20,55 @@ def create_topology():
         print(f"Starting FRR services on {router}...")
         run_command(["sudo", "docker", "exec", f"4480_traffic_control-{router}-1", "./frr.sh"])
 
+
+
+
+def get_interface_by_ip(container_name, target_ip_subnet):
+    result = subprocess.run(["sudo", "docker", "exec", container_name, "bash", "-c", "ip -o -f inet addr show | awk '{print $2, $4}'"], capture_output=True, text=True)
+    lines = result.stdout.strip().split("\n")
+    for line in lines:
+        interface, cidr = line.split()
+        if cidr.startswith(target_ip_subnet):
+            return interface
+    raise Exception(f"Interface with subnet {target_ip_subnet} not found in {container_name}")
+
+
+
+
+
 def switch_path(direction):
     print(f"Switching path to {direction}...")
 
+    # find interfaces dynaimcally via prof's suggested "hacky workaround"
+    r1_north_iface = get_interface_by_ip("4480_traffic_control-r1-1", "10.0.16.")
+    r1_south_iface = get_interface_by_ip("4480_traffic_control-r1-1", "10.0.19.")
+    r3_north_iface = get_interface_by_ip("4480_traffic_control-r3-1", "10.0.17.")
+    r3_south_iface = get_interface_by_ip("4480_traffic_control-r3-1", "10.0.18.")
+
     if direction == "north":
         print("Setting lower cost for north path (R1 -> R2 -> R3)...")
-        
-        #left side
-        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 10"])
-        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 100"])
-        #right side
-        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 10"])
-        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 100"])
-   
+        # left
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", f"interface {r1_north_iface}", "-c", "ip ospf cost 10"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", f"interface {r1_south_iface}", "-c", "ip ospf cost 100"])
+        # right
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", f"interface {r3_north_iface}", "-c", "ip ospf cost 10"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", f"interface {r3_south_iface}", "-c", "ip ospf cost 100"])
+
     elif direction == "south":
         print("Setting lower cost for south path (R1 -> R4 -> R3)...")
-        
-        #left side
-        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 100"])
-        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 10"])
-        #right side
-        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth1", "-c", "ip ospf cost 100"])
-        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", "interface eth2", "-c", "ip ospf cost 10"])
+        # left
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", f"interface {r1_north_iface}", "-c", "ip ospf cost 100"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r1-1", "vtysh", "-c", "configure terminal", "-c", f"interface {r1_south_iface}", "-c", "ip ospf cost 10"])
+        # right
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", f"interface {r3_north_iface}", "-c", "ip ospf cost 100"])
+        run_command(["sudo", "docker", "exec", "4480_traffic_control-r3-1", "vtysh", "-c", "configure terminal", "-c", f"interface {r3_south_iface}", "-c", "ip ospf cost 10"])
     
     else:
         print("Invalid direction. Use 'north' or 'south'.")
         sys.exit(1)
+        
+        
+        
 
 def main():
     parser = argparse.ArgumentParser(description="Network Topology Orchestrator")
