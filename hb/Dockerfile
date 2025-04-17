@@ -1,4 +1,4 @@
-# ha/hb/Dockerfile
+# ha/hb Dockerfile
 FROM ubuntu
 
 RUN apt-get update && apt-get -y install \
