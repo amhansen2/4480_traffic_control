@@ -11,8 +11,8 @@ def run_command(cmd_list, check=True):
 
 def create_topology():
     print("Building Network Topology...")
-    run_command(["sudo", "./dockersetup"])
-    run_command(["sudo", "docker", "compose", "up", "-d", "--no-cache"])
+    run_command(["sudo", "docker", "compose", "build", "--no-cache"])
+    run_command(["sudo", "docker", "compose", "up", "-d"])
     
     # Start FRR services on routers
     routers = ["r1", "r2", "r3", "r4"]
