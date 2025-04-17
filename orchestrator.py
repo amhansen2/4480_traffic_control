@@ -11,7 +11,7 @@ def run_command(cmd_list, check=True):
 
 def create_topology():
     print("Building Network Topology...")
-    run_command(["docker-compose", "up", "-d"])
+    run_command(["docker compose", "up", "-d"])
 
 def start_ospf():
     print("Starting OSPF on routers...")
