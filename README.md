@@ -18,7 +18,7 @@ python3 orchestrator.py create
 ### Test
 Jump onto router/host
 ```
-sudo docker exec -it 4480_traffic_control-ha-1 bash
+docker exec -it 4480_traffic_control-r1-1 bash
 ```
 
 test frr stuff

@@ -1,30 +1,29 @@
 FROM ubuntu
 
-RUN apt-get update
-RUN apt-get -y install bash iproute2 net-tools tcpdump vim iputils-ping traceroute
-RUN apt-get clean
+# Install basic networking and debugging tools
+RUN apt-get update && apt-get -y install \
+    bash iproute2 net-tools tcpdump vim iputils-ping curl gnupg lsb-release frr frr-pythontools && \
+    apt-get clean
 
-RUN apt-get install -y curl gnupg 
-RUN curl -s https://deb.frrouting.org/frr/keys.gpg | tee /usr/share/keyrings/frrouting.gpg > /dev/null
-RUN apt-get install -y lsb-release
+# Add FRR repo and install FRR and OSPF tools
+RUN curl -s https://deb.frrouting.org/frr/keys.gpg | tee /usr/share/keyrings/frrouting.gpg > /dev/null && \
+    echo "deb [signed-by=/usr/share/keyrings/frrouting.gpg] https://deb.frrouting.org/frr $(lsb_release -s -c) frr-stable" | \
+    tee -a /etc/apt/sources.list.d/frr.list && \
+    apt-get update && \
+    apt-get -y install frr frr-pythontools
 
-ENV FRRVER=frr-stable
-RUN echo "deb [signed-by=/usr/share/keyrings/frrouting.gpg] https://deb.frrouting.org/frr $(lsb_release -s -c) ${FRRVER}" | tee /etc/apt/sources.list.d/frr.list
-RUN apt-get update
-RUN apt-get install -y frr frr-pythontools
+# Add zebra=yes and ospfd=yes in /etc/frr/daemons file
+RUN echo "zebra=yes" >> /etc/frr/daemons && \
+    echo "ospfd=yes" >> /etc/frr/daemons
 
-# add zebra=yes and ospfd=yes in /etc/frr/daemons file 
-#(don't know why zebra isn't automatically showing up but I keep getting this error)
-RUN echo "zebra=yes" >> /etc/frr/daemons 
+# Enable OSPF daemon
 RUN sed -i 's/ospfd=no/ospfd=yes/' /etc/frr/daemons
 
-# setup frr with my conf files
+# Copy initial FRR config (optional, could be per-router config)
 COPY frr.conf /etc/frr/frr.conf
+
 COPY frr.sh /frr.sh
 RUN chmod +x /frr.sh
-
-
-CMD ["tail", "-f", "/dev/null"]
-
+ENTRYPOINT ["/frr.sh"]
 
 
