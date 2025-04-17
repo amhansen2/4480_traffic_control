@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # start FRR
 /usr/lib/frr/frrinit.sh start
 
